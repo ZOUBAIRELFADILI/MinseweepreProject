@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:minesweeper/core/theme/app_color.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key}); //Constructor
 
   @override
   State<HomePage> createState() => _HomePageState();
-}
-
+} //State for the HomePage Widget
+ 
 class _HomePageState extends State<HomePage> {
   int rows = 12;
   int columns = 8;
@@ -20,11 +20,12 @@ class _HomePageState extends State<HomePage> {
   bool gameOver = false;
 
   @override
-  void initState() {
+  void initState() {   //Initialize the game grid wehn the widget is first created
     super.initState();
     _intializeGrid();
   }
 
+  //Initializes the game grid with empty cells, places mines randomly, and calculates the number of adjacent mines for each cell
   void _intializeGrid() {
     // Initialize grid with empty cells
     grid = List.generate(
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
   /// [0,-1] [cell] [0,1]
   ///
   /// [1,-1] [1,0] [1,1]
-  final directions = [
+  final directions = [ //List of Offeset objects representing directions (neighbors) around a cell
     const Offset(-1, -1),
     const Offset(-1, 0),
     const Offset(-1, 1),
@@ -90,11 +91,11 @@ class _HomePageState extends State<HomePage> {
     const Offset(1, 1),
   ];
 
-  // check for valid cell
+  //  Checkes if the given row and column indices are valid within the grid
   bool _isValidCell(int row, int col) {
     return row >= 0 && row < rows && col >= 0 && col < columns;
   }
-
+// Handles the tap on a cell, revealing mines or opening adjacent cells
   void _handleCellTap(Cell cell) {
     if (gameOver || cell.isOpen || cell.isFlagged) return;
 
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage> {
     return true;
   }
 
-  /// open neibour cell untill found a mines
+  /// Opens adjacent cells recursively untilk a cell with adjacent mines is reached
   void _openAdjacentCells(int row, int col) {
     /// open neigbour cells
     for (final dir in directions) {
@@ -185,6 +186,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+//Handles a long press on a cell, toggling its flag status
   void _handleCellLongPress(Cell cell) {
     if (cell.isOpen) return;
     if (flagCount <= 0 && !cell.isFlagged) return;
@@ -199,7 +201,7 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
-
+// Resets the game state, reinitializing the grid
   void _reset() {
     setState(() {
       grid = [];
@@ -219,6 +221,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+//Builds the UI for minesweeper gane using a Scaffold, AppBar, ListView , GridView
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -339,7 +342,7 @@ class Cell {
 
   /// the sum of surounded mines
   int adjacentMines;
-
+// Constructor for the Cell class, representing a cell in the Minesweeper game
   Cell({
     required this.row,
     required this.col,
